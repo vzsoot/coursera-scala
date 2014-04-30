@@ -24,5 +24,28 @@ object Main {
   /**
    * Exercise 3
    */
-  def countChange(money: Int, coins: List[Int]): Int = ???
+  def countChange(money: Int, coins: List[Int]): Int = {
+
+    def doCount(usedCoins: List[Int], nextCoin: Int): Int = {
+      val coinsSum = usedCoins.sum + coins(nextCoin)
+      if (coinsSum == money)
+        if (!usedCoins.isEmpty && nextCoin < coins.length - 1)
+          1 + doCount(usedCoins.init, nextCoin + 1)
+        else if (usedCoins.isEmpty && nextCoin < coins.length - 1)
+          1 + doCount(usedCoins, nextCoin + 1)
+        else if (!usedCoins.isEmpty && nextCoin == coins.length - 1)
+          1 + doCount(usedCoins.init, nextCoin)
+        else
+          1
+      else if (coinsSum < money)
+        doCount(usedCoins :+ coins(nextCoin), nextCoin)
+      else if (coinsSum > money && !usedCoins.isEmpty && nextCoin < coins.length - 1)
+        doCount(usedCoins.init, nextCoin + 1)
+      else
+        0
+    }
+
+    doCount(List.empty[Int], 0)
+  } //> countChange: (money: Int, coins: List[Int])Int
+
 }
