@@ -21,30 +21,33 @@ object Main {
       1
     else
       pascal(c - 1, r - 1) + pascal(c, r - 1)
-  }                                               //> pascal: (c: Int, r: Int)Int
+  } //> pascal: (c: Int, r: Int)Int
 
   /**
    * Exercise 2
    */
   def balance(chars: List[Char]): Boolean = {
-    def stack(chars: List[Char]): Int = {
+    def stack(chars: List[Char], level: Int): Boolean = {
       if (chars.isEmpty)
-        0
-      else if (chars.head=='(')
-      	1+stack(chars.tail)
-      else if (chars.head==')')
-      	-1+stack(chars.tail)
+        level == 0
+      else if (level < 0)
+        false
+      else if (chars.head == '(')
+        stack(chars.tail, level + 1)
+      else if (chars.head == ')')
+        stack(chars.tail, level - 1)
       else
-        stack(chars.tail)
+        stack(chars.tail, level)
     }
-    
-    stack(chars)==0
+
+    stack(chars, 0)
   }
 
   /**
    * Exercise 3
    */
   def countChange(money: Int, coins: List[Int]): Int = {
+
     val coinsSorted = coins.sortWith((x, y) => { x <= y })
     val coinsMax = coinsSorted.map((x) => { money / x })
     val coinsMaxSum = coinsMax.sum;
@@ -73,6 +76,9 @@ object Main {
       }
     }
 
-    counter(coinsMax.head +: List.fill(coins.length - 1)(0), 0)
+    if (coins.isEmpty)
+      0
+    else
+      counter(coinsMax.head +: List.fill(coins.length - 1)(0), 0)
   } //> countChange: (money: Int, coins: List[Int])Int
 }
