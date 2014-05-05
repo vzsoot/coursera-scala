@@ -78,6 +78,8 @@ object Main {
 
     if (coins.isEmpty)
       0
+    else if (coins.length == 1 && money % coins.head == 0)
+      1
     else
       counter(coinsMax.head +: List.fill(coins.length - 1)(0), 0)
   } //> countChange: (money: Int, coins: List[Int])Int
