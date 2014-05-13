@@ -133,7 +133,8 @@ class FunSetSuite extends FunSuite {
     new TestSets {
       val s = x => Set(1,3,4,5,7,1000).contains(x)
       val e = x => Set(0,2,3,4,6,999).contains(x)
-      assert(FunSets.toString(map(s, x => x-1))===FunSets.toString(e))
+      
+      assert(FunSets.toString(map(s, x => x - 1))===FunSets.toString(e))
     }
   }
 }

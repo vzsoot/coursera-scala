@@ -77,7 +77,14 @@ object FunSets {
   /**
    * Returns a set transformed by applying `f` to each element of `s`.
    */
-  def map(s: Set, f: Int => Int): Set = x => s(f(x))
+  def map(s: Set, f: Int => Int): Set = x => {
+	def inv(v: Int): Boolean = {
+	  if (v > bound) false
+	  else if (x == f(v) && s(v)) true
+	  else inv(v+1)
+	}
+	inv(-bound)
+  }
 
   /**
    * Displays the contents of a set
