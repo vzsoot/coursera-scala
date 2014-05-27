@@ -135,10 +135,11 @@ class NonEmpty(elem: Tweet, left: TweetSet, right: TweetSet) extends TweetSet {
     if (p(elem)) new NonEmpty(elem, left.filterAcc(p, acc), right.filterAcc(p, acc))
     else left.filterAcc(p, acc) union right.filterAcc(p, acc)
 
-  def union(that: TweetSet): TweetSet = {
-    val u: TweetSet = new Empty;
-    that.foreach(t => u.incl(t)).foreach(t => u.incl(t))
-  }
+  def union(that: TweetSet): TweetSet = recUnion(that, descendingByRetweet)
+  
+  def recUnion(that: TweetSet, tweets: TweetList): TweetSet =
+    if (tweets.isEmpty) that
+    else recUnion(that.incl(tweets.head), tweets.tail)
 
   def mostRetweeted: Tweet = {
     val leftMax = try { left.mostRetweeted } catch { case ex: java.util.NoSuchElementException => elem }
